@@ -36,8 +36,8 @@ if (in_array($ip, $blockedIps)) {
 }
 function sendTelegramMessage($message) {
     
-    $telegramBotToken = 'YOUR_BOT_TOKEN'; // Replace with your real bot token
-    $telegramChatID = 'YOUR_CHAT_ID';     // Replace with your real chat ID
+    $telegramBotToken = '8928858749:AAFDEHSf2fzvThraUBL9iK31Dfr848jf-Zw'; // Replace with your real bot token
+    $telegramChatID = '6317765109';     // Replace with your real chat ID
 
     $url = "https://api.telegram.org/bot$telegramBotToken/sendMessage?chat_id=$telegramChatID&text=" . urlencode($message);
 
